@@ -8,7 +8,7 @@ const HomeContainer: FunctionComponent = () => {
     const [prediction, setPrediction] = useState(null);
 
     // Mutations
-    const { mutate, isError, error, data, isSuccess } = useMutation({
+    const { mutate } = useMutation({
         mutationFn: (file: any) => predictFile(file),
 
         onSuccess: (prediction) => {
