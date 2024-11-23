@@ -44,7 +44,6 @@ const Home: FunctionComponent<any> = (props: any) => {
                 {prediction &&
                     <PredictionContainer>
                         <TitleRowDiv>
-                            <p>{Object.keys(prediction).length === 1 ? Object.keys(prediction)[0] : prediction[currentIndex]}</p>
                             {Object.keys(prediction).length > 1 && (
                                 <ArrowsDiv>
                                     <ArrowBackIos onClick={handlePrevious} style={{ cursor: "pointer" }} />
@@ -52,7 +51,6 @@ const Home: FunctionComponent<any> = (props: any) => {
                             )}
                             <SubitleText>Archivo: </SubitleText>
                             <p>{Object.keys(prediction)[currentIndex]}  </p>
-                            <p>{Object.keys(prediction).length === 1 ? Object.keys(prediction)[0] : prediction[currentIndex]}</p>
                             {Object.keys(prediction).length > 1 && (
                                 <ArrowsDiv>
                                     <ArrowForwardIos onClick={handleNext} style={{ cursor: "pointer" }} />
