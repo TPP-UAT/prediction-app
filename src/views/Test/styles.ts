@@ -2,17 +2,12 @@ import styled from "styled-components";
 
 
 export const TitleContainer = styled.div`
-  border-bottom: 2px solid #cccccc;
+  border-bottom: 1px solid '#DDDDDD';
   text-align: center;
-  font-weight: bold;
-  font-size: 32px;
-  color: #1a1841;
+  font-weight: bold ;
+  font-size: 24px;
   width: 100%;
-  margin: 10px 0 30px;
-  padding-bottom: 10px;
-  letter-spacing: 1px;
-  background-color: #f9f9f9;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin: 5px 10px 30px;
 `;
 
 export const SubitleText = styled.div`
@@ -86,24 +81,16 @@ export const PredictionContainer = styled.div`
 
 export const TermTitle = styled.div`
   text-align: center;
-  font-weight: bold;
-  font-size: 22px;
-  color: #2c3e50;
-  margin: 0 5px 15px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-family: 'Helvetica Neue', Arial, sans-serif;
-  border-bottom: 2px solid #007aa0;
-  padding-bottom: 5px;
+  font-weight: bold ;
+  font-size: 18px;
+  margin: 0 5px 10px;
 `;
-
 
 export const TermDetailsTitle = styled.div`
   text-align: center;
   font-weight: bold ;
   font-size: 15px;
   margin: 0 5px;
-  border-right: 2px;
 `;
 
 export const TermDetailsText = styled.div`
@@ -136,28 +123,4 @@ export const Button = styled.button`
 
 export const ArrowsDiv = styled.div`
   margin: 0 0 0 10px
-`;
-
-
-export const HeaderDiv = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  background-color: #007aa0;
-`;
-
-
-export const LogoImage = styled.img`
-  width: 300px;
-  height: auto;
-  margin: 10px;
-`;
-
-export const ProbabilityText = styled.span<{ probability: number }>`
-  color: ${(props) => {
-    if (props.probability > 90) return '#43a93e';
-    if (props.probability >= 50) return '#cbb23a';
-    return '#cb4444';
-  }};
-  font-weight: bold;
 `;

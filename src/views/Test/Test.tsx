@@ -1,10 +1,11 @@
 import { FunctionComponent, useState } from 'react';
 import { FormControl } from '@mui/base/FormControl';
 import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
-import { ArrowsDiv, Button, ColumnDiv, DetailsColumnDiv, DetailsRowDiv, FormContainer, HeaderDiv, LogoImage, PredictionContainer, ProbabilityText, RowDiv, SubitleText, SubtitleDetailsDiv, TermDetailsText, TermDetailsTitle, TermTitle, TitleContainer, TitleRowDiv } from './styles';
+import { ArrowsDiv, Button, ColumnDiv, DetailsColumnDiv, DetailsRowDiv, FormContainer, PredictionContainer, RowDiv, SubitleText, SubtitleDetailsDiv, TermDetailsText, TermDetailsTitle, TermTitle, TitleContainer, TitleRowDiv } from './styles';
 
-const Home: FunctionComponent<any> = (props: any) => {
+const Test: FunctionComponent<any> = (props: any) => {
     const { onSubmitDoc, prediction } = props;
+
     const [currentIndex, setCurrentIndex] = useState(0);
 
     const handlePrevious = () => {
@@ -20,12 +21,8 @@ const Home: FunctionComponent<any> = (props: any) => {
 
     return (
         <>
-            <HeaderDiv>
-                <LogoImage src="../../src/assets/AAS-Publishing-2-black.jpg" alt="Logo" />
-            </HeaderDiv>
-
             <ColumnDiv>
-                <TitleContainer> File Prediction </TitleContainer>
+                <TitleContainer> Files predictor </TitleContainer>
                 <FormContainer>
                     <form onSubmit={onSubmitDoc}  >
                         <FormControl defaultValue="" required>
@@ -64,15 +61,27 @@ const Home: FunctionComponent<any> = (props: any) => {
                             <ColumnDiv>
                                 <TermTitle> Terminos seguros</TermTitle>
                                 {Object.keys(prediction[Object.keys(prediction)[currentIndex]]).map((id) => {
-                                    const prob = prediction[Object.keys(prediction)[currentIndex]][id].probability;
-                                    if (prob >= 0.75) {
+                                    const probabilities = prediction[Object.keys(prediction)[currentIndex]][id].probabilities;
+                                    if (probabilities.some((prob: number) => prob >= 0.75)) {
                                         return (
                                             <DetailsRowDiv key={id}>
-                                                <TermDetailsTitle>{prediction[Object.keys(prediction)[currentIndex]][id].name} ({id})</TermDetailsTitle>
+                                                <TermDetailsTitle>{id}.</TermDetailsTitle>
                                                 <DetailsColumnDiv>
                                                     <SubtitleDetailsDiv>
-                                                        <TermDetailsTitle>Probabilidad:</TermDetailsTitle>
-                                                        <ProbabilityText probability={prob * 100}>{(prob * 100).toFixed(2)}%</ProbabilityText>
+                                                        <TermDetailsTitle>Probabilities:</TermDetailsTitle>
+                                                        <TermDetailsText> [{probabilities.join(", ")} ]</TermDetailsText>
+                                                    </SubtitleDetailsDiv>
+                                                    <SubtitleDetailsDiv>
+                                                        <TermDetailsTitle>Input creator:</TermDetailsTitle>
+                                                        <TermDetailsText>
+                                                            {prediction[Object.keys(prediction)[currentIndex]][id].multipliersNames.join(", ")}
+                                                        </TermDetailsText>
+                                                    </SubtitleDetailsDiv>
+                                                    <SubtitleDetailsDiv>
+                                                        <TermDetailsTitle>Parents:</TermDetailsTitle>
+                                                        <TermDetailsText>
+                                                            {prediction[Object.keys(prediction)[currentIndex]][id].parent.join(", ")}
+                                                        </TermDetailsText>
                                                     </SubtitleDetailsDiv>
                                                 </DetailsColumnDiv>
                                             </DetailsRowDiv>
@@ -85,15 +94,27 @@ const Home: FunctionComponent<any> = (props: any) => {
                             <ColumnDiv>
                                 <TermTitle> Terminos probables</TermTitle>
                                 {Object.keys(prediction[Object.keys(prediction)[currentIndex]]).map((id) => {
-                                    const prob = prediction[Object.keys(prediction)[currentIndex]][id].probability;
-                                    if (prob < 0.75) {
+                                    const probabilities = prediction[Object.keys(prediction)[currentIndex]][id].probabilities;
+                                    if (probabilities.every((prob: number) => prob < 0.75)) {
                                         return (
                                             <DetailsRowDiv key={id}>
-                                                <TermDetailsTitle>{prediction[Object.keys(prediction)[currentIndex]][id].name} ({id})</TermDetailsTitle>
+                                                <TermDetailsTitle>{id}.</TermDetailsTitle>
                                                 <DetailsColumnDiv>
                                                     <SubtitleDetailsDiv>
-                                                        <TermDetailsTitle>Probabilidad:</TermDetailsTitle>
-                                                        <ProbabilityText probability={prob * 100}>{(prob * 100).toFixed(2)}%</ProbabilityText>
+                                                        <TermDetailsTitle>Probabilities:</TermDetailsTitle>
+                                                        <TermDetailsText> [{probabilities.join(", ")} ]</TermDetailsText>
+                                                    </SubtitleDetailsDiv>
+                                                    <SubtitleDetailsDiv>
+                                                        <TermDetailsTitle>Input creator:</TermDetailsTitle>
+                                                        <TermDetailsText>
+                                                            {prediction[Object.keys(prediction)[currentIndex]][id].multipliersNames.join(", ")}
+                                                        </TermDetailsText>
+                                                    </SubtitleDetailsDiv>
+                                                    <SubtitleDetailsDiv>
+                                                        <TermDetailsTitle>Parents:</TermDetailsTitle>
+                                                        <TermDetailsText>
+                                                            {prediction[Object.keys(prediction)[currentIndex]][id].parent.join(", ")}
+                                                        </TermDetailsText>
                                                     </SubtitleDetailsDiv>
                                                 </DetailsColumnDiv>
                                             </DetailsRowDiv>
@@ -114,4 +135,4 @@ const Home: FunctionComponent<any> = (props: any) => {
     );
 }
 
-export default Home;
+export default Test;
