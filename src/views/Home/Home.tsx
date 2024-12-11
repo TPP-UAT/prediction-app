@@ -1,20 +1,35 @@
 import { FunctionComponent, useState } from 'react';
 import { FormControl } from '@mui/base/FormControl';
 import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
-import { ArrowsDiv, Button, ColumnDiv, DetailsColumnDiv, DetailsRowDiv, FormContainer, HeaderDiv, LogoImage, PredictionContainer, ProbabilityText, RowDiv, SubitleText, SubtitleDetailsDiv, TermDetailsText, TermDetailsTitle, TermTitle, TitleContainer, TitleRowDiv } from './styles';
+import { 
+    ArrowsDiv,
+    Button, 
+    ColumnDiv,
+    DetailsColumnDiv, 
+    DetailsRowDiv, 
+    FormContainer, 
+    HeaderDiv, 
+    LogoImage,
+    PredictionContainer,
+    ProbabilityText, 
+    RowDiv, 
+    SubitleText, 
+    SubtitleDetailsDiv, 
+    TermDetailsTitle, 
+    TermTitle, 
+    TitleContainer, 
+    TitleRowDiv 
+} from './styles';
 
 const Home: FunctionComponent<any> = (props: any) => {
     const { onSubmitDoc, prediction } = props;
     const [currentIndex, setCurrentIndex] = useState(0);
 
     const handlePrevious = () => {
-        console.log("Previo")
         setCurrentIndex((prevIndex) => (prevIndex > 0 ? prevIndex - 1 : Object.keys(prediction).length - 1));
     };
 
     const handleNext = () => {
-        console.log("Post")
-
         setCurrentIndex((prevIndex) => (prevIndex < Object.keys(prediction).length - 1 ? prevIndex + 1 : 0));
     };
 
@@ -27,7 +42,7 @@ const Home: FunctionComponent<any> = (props: any) => {
             <ColumnDiv>
                 <TitleContainer> File Prediction </TitleContainer>
                 <FormContainer>
-                    <form onSubmit={onSubmitDoc}  >
+                    <form onSubmit={onSubmitDoc}>
                         <FormControl defaultValue="" required>
                             <label htmlFor="file">Upload a file </label>
                             <input

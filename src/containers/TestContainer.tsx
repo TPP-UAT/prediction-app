@@ -1,7 +1,7 @@
 import { FunctionComponent, useState } from 'react';
 import Test from '../views/Test/Test';
 import { useMutation } from "@tanstack/react-query";
-import { predictFileTest } from '../services/prediction.services';
+import { predictFilesTest } from '../services/prediction.services';
 
 
 const TestContainer: FunctionComponent = () => {
@@ -9,7 +9,7 @@ const TestContainer: FunctionComponent = () => {
 
     // Mutations
     const { mutate } = useMutation({
-        mutationFn: (file: any) => predictFileTest(file),
+        mutationFn: (file: any) => predictFilesTest(file),
 
         onSuccess: (prediction) => {
             console.log("FILE PREDICHA", prediction)

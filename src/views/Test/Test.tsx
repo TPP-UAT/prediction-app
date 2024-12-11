@@ -1,7 +1,22 @@
 import { FunctionComponent, useState } from 'react';
 import { FormControl } from '@mui/base/FormControl';
 import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
-import { ArrowsDiv, Button, ColumnDiv, DetailsColumnDiv, DetailsRowDiv, FormContainer, PredictionContainer, RowDiv, SubitleText, SubtitleDetailsDiv, TermDetailsText, TermDetailsTitle, TermTitle, TitleContainer, TitleRowDiv } from './styles';
+import { ArrowsDiv, 
+    Button, 
+    ColumnDiv, 
+    DetailsColumnDiv,
+    DetailsRowDiv, 
+    FormContainer, 
+    PredictionContainer,
+    RowDiv, 
+    SubitleText, 
+    SubtitleDetailsDiv, 
+    TermDetailsText, 
+    TermDetailsTitle, 
+    TermTitle, 
+    TitleContainer, 
+    TitleRowDiv 
+} from './styles';
 
 const Test: FunctionComponent<any> = (props: any) => {
     const { onSubmitDoc, prediction } = props;
