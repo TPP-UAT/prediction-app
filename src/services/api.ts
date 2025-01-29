@@ -39,7 +39,6 @@ export async function get(url: string, headers = {}): Promise<any> {
 export async function post(url: string, params = {}, headers = {}): Promise<any> {
   try {
     const getToken = await getOptions();
-    console.log("PARAMS", params)
     const options = { ...getToken, ...headers };
     const response = await api.post(url, params, options);
     return response;
