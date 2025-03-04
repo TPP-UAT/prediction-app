@@ -1,4 +1,4 @@
-import { FunctionComponent, useState } from 'react';
+import { FunctionComponent, useState, useEffect } from 'react';
 import getFileTermsPath from '../../helpers/file_terms_path_finder'
 import { FormControl } from '@mui/base/FormControl';
 import CheckIcon from '@mui/icons-material/Check';
@@ -26,10 +26,13 @@ import {
     TitleRowDiv
 } from './styles';
 import ReactLoading from 'react-loading';
+import { orange } from '@mui/material/colors';
 
 const Home: FunctionComponent<any> = (props: any) => {
     const { onSubmitDoc, prediction, keywords, isLoading } = props;
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [pathResults, setPathResults] = useState<Record<string, { inPath: boolean; path: string[], color: string }>>({});
+
     const handlePrevious = () => {
         setCurrentIndex((prevIndex) => (prevIndex > 0 ? prevIndex - 1 : Object.keys(prediction).length - 1));
     };
@@ -39,32 +42,78 @@ const Home: FunctionComponent<any> = (props: any) => {
         return currentKeywords?.some((keyword: string) => keyword.includes(`(${keywordId})`));
     };
 
-    const isInPath = async (keywordId: string): Promise<boolean> => {
+    const wasPredictedCorrectly = (originalKeyword: string): boolean => {
+        const originalKeywordId = originalKeyword.match(/\((\d+)\)/);
+
+        let originalId;
+        if (originalKeywordId) {
+            originalId = originalKeywordId[1];
+        }
+        const predictionKey = Object.keys(prediction)[0];
+        if (!predictionKey) return false;
+
+        return prediction[predictionKey]?.hasOwnProperty(originalId) ?? false;
+    };
+
+    const isInPath = async (predictedKeywordId: string): Promise<{ inPath: boolean; path: string[], color: string }> => {
         const elevenChildren = [
             "104", "1145", "1476", "1529", "1583", "343", "486", "563", "739", "804", "847"
         ];
 
         for (const key of Object.keys(keywords)) {
             const currentKeywords = keywords[key];
-            console.log("currentKeywords",currentKeywords)
-            
-            for(const keyword of currentKeywords) {
-                console.log("keyword en for", keyword)
+            for (const keyword of currentKeywords) {
                 const originalKeywordId = keyword.match(/\((\d+)\)/);
-                console.log("Keyword predicted:", keywordId, "| Original keyword:", originalKeywordId[1]);
+                const originalId = originalKeywordId[1];
+                const termsPath = await getFileTermsPath(elevenChildren, [originalId]);
+                for (const termPath of termsPath) {
+                    const pathWithAllElements = termPath.path
 
-
-                if (originalKeywordId) {
-                    const originalId = originalKeywordId[1];
-                    const termsPath = await getFileTermsPath(elevenChildren, [originalId]);
-                    console.log("termsPath", termsPath);
-                    //return true
+                    const path = pathWithAllElements.slice(1, -1) //Delete first and last element
+                    if (path.includes(predictedKeywordId)) {
+                        console.log("Keyword predicted:", predictedKeywordId, "| Original keyword:", originalId, "| Path:", pathWithAllElements);
+                        return { inPath: true, path: pathWithAllElements, color: "orange" };
+                    }
                 }
             }
         }
 
-        return false;
+        for (const key of Object.keys(keywords)) {
+            const currentKeywords = keywords[key];
+            for (const keyword of currentKeywords) {
+                const originalKeywordId = keyword.match(/\((\d+)\)/);
+                const originalId = originalKeywordId[1];
+                const termsPath = await getFileTermsPath(elevenChildren, [predictedKeywordId])
+                for (const termPath of termsPath) {
+                    const pathWithAllElements = termPath.path
+                    const path = pathWithAllElements.slice(1, -1) //Delete first and last element
+                    if (path.includes(originalId)) {
+                        console.log("CHILDREN - Keyword predicted:", predictedKeywordId, "| Original keyword:", originalId, "| Path:", pathWithAllElements);
+                        return { inPath: true, path: pathWithAllElements, color: "red" };
+                    }
+                }
+            }
+        }
+
+
+
+
+
+        return { inPath: false, path: [], color: "black" };
     };
+
+    useEffect(() => {
+        const checkPaths = async () => {
+            const results: Record<string, { inPath: boolean; path: string[], color: string }> = {};
+            for (const id of Object.keys(prediction[Object.keys(prediction)[currentIndex]])) {
+                const pathData = await isInPath(id);
+                results[id] = pathData;
+            }
+            setPathResults(results);
+        };
+
+        checkPaths();
+    }, [prediction, currentIndex]);
 
 
 
@@ -124,14 +173,20 @@ const Home: FunctionComponent<any> = (props: any) => {
                                         return (
                                             <DetailsRowDiv key={id}>
                                                 <TermDetailsTitle>
+                                                    {pathResults[id]?.inPath && (
+                                                        <CheckIcon style={{ color: pathResults[id]?.color, marginRight: "5px" }} />
+                                                    )}
                                                     {isKeywordCorrect(id) && <CheckIcon style={{ color: "green", marginRight: "5px" }} />}
                                                     {prediction[Object.keys(prediction)[currentIndex]][id].name} ({id})
-                                                    {isInPath(id) && <CheckIcon style={{ color: "orange", marginRight: "5px" }} />}
+                                                    {pathResults[id]?.inPath && (
+                                                        <span style={{ color: "gray", fontSize: "12px" }}> Path: {pathResults[id]?.path.join(", ")}</span>
+                                                    )}
+
                                                 </TermDetailsTitle>
                                                 <DetailsColumnDiv>
                                                     <SubtitleDetailsDiv>
                                                         <TermDetailsTitle>Probabilidad:</TermDetailsTitle>
-                                                        <ProbabilityText probability={prob * 100} style={{ color: isKeywordCorrect(id) ? "green" : "black" }} >
+                                                        <ProbabilityText probability={prob * 100}>
                                                             {(prob * 100).toFixed(2)}%
                                                         </ProbabilityText>
                                                     </SubtitleDetailsDiv>
@@ -151,12 +206,21 @@ const Home: FunctionComponent<any> = (props: any) => {
                                         return (
                                             <DetailsRowDiv key={id}>
                                                 <TermDetailsTitle>
+                                                    {pathResults[id]?.inPath && (
+                                                        <CheckIcon style={{ color: pathResults[id]?.color, marginRight: "5px" }} />
+                                                    )}
                                                     {isKeywordCorrect(id) && <CheckIcon style={{ color: "green", marginRight: "5px" }} />}
-                                                    {prediction[Object.keys(prediction)[currentIndex]][id].name} ({id})</TermDetailsTitle>
+                                                    {prediction[Object.keys(prediction)[currentIndex]][id].name} ({id})
+                                                    {pathResults[id]?.inPath && (
+                                                        <>
+                                                            <span style={{ color: "gray", fontSize: "12px" }}> Path: {pathResults[id]?.path.join(", ")}</span>
+                                                        </>
+                                                    )}
+                                                </TermDetailsTitle>
                                                 <DetailsColumnDiv>
                                                     <SubtitleDetailsDiv>
                                                         <TermDetailsTitle>Probabilidad:</TermDetailsTitle>
-                                                        <ProbabilityText probability={prob * 100} style={{ color: isKeywordCorrect(id) ? "orange" : "black" }}>
+                                                        <ProbabilityText probability={prob * 100} >
                                                             {(prob * 100).toFixed(2)}%
                                                         </ProbabilityText>
                                                     </SubtitleDetailsDiv>
@@ -175,7 +239,12 @@ const Home: FunctionComponent<any> = (props: any) => {
                                 <DetailsColumnDiv>
                                     <div>
                                         {keywords[Object.keys(prediction)[currentIndex]]?.map((keyword: any, index: any) => (
-                                            <KeywordsDetails key={index}>{keyword}</KeywordsDetails>
+                                            <div key={index} style={{ display: "flex", alignItems: "center" }}>
+                                                {wasPredictedCorrectly(keyword) && (
+                                                    <CheckIcon style={{ color: "green", marginRight: "5px" }} />
+                                                )}
+                                                <KeywordsDetails>{keyword}</KeywordsDetails>
+                                            </div>
                                         ))}
                                     </div>
                                 </DetailsColumnDiv>

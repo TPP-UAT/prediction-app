@@ -152,9 +152,9 @@ export const LogoImage = styled.img`
 
 export const ProbabilityText = styled.span<{ probability: number }>`
   color: ${(props) => {
-    if (props.probability > 90) return '#43a93e';
-    if (props.probability >= 50) return '#cbb23a';
-    return '#cb4444';
+    if (props.probability >= 80) return '#4d9e42';
+    if (props.probability >= 50) return '#ffd414';
+    return '#fa6436';
   }};
   font-weight: bold;
 `;
@@ -171,7 +171,7 @@ export const TitleActualKeywords = styled.div`
   text-align: center;
   font-weight: bold;
   font-size: 22px;
-  color: #2c3e50;
+  color:#2c3e50;
   margin: 30px 5px 15px;
   text-transform: uppercase;
   letter-spacing: 1px;

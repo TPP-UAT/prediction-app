@@ -116,7 +116,7 @@ export class Thesaurus {
 
             const term = this.terms[currentId];
 
-            for (const neighborId of [...term.getChildren(), ...term.getParents()]) {
+            for (const neighborId of [...term.getChildren()]) {
                 const newDistance = currentDistance + 1;
                 if (newDistance < distances[neighborId]) {
                     distances[neighborId] = newDistance;

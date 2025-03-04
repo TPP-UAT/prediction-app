@@ -24,11 +24,11 @@ export async function calculateDistances(predictedIds: string[], originalIds: st
   return distances;
 }
 
-const getFileTermsPath = async (predictedIds: string[], originalIds: string[]): Promise<{ predictedId: string, originalId: string, isPredictedInPath: boolean }[]> => {
+const getFileTermsPath = async (predictedIds: string[], originalIds: string[]): Promise<{ predictedId: string, originalId: string, isPredictedInPath: boolean, path: any }[]> => {
   try {
     const result = await calculateDistances(predictedIds, originalIds);
 
-    const pathsValidationResults: { predictedId: string, originalId: string, isPredictedInPath: boolean, path: Array<string>|string }[] = [];
+    const pathsValidationResults: { predictedId: string, originalId: string, isPredictedInPath: boolean, path: any }[] = [];
 
     for (const [key, value] of Object.entries(result)) {
       const [predictedId, originalId] = key.split(",");
