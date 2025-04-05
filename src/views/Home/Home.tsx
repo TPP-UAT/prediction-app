@@ -30,7 +30,7 @@ interface HomeProps {
     fileName: string;
 }
 
-const Home2 = (props: HomeProps) => {
+const Home = (props: HomeProps) => {
     const { 
         onSubmitDoc, 
         predictions, 
@@ -118,4 +118,4 @@ const Home2 = (props: HomeProps) => {
     )
 }
 
-export default Home2;
+export default Home;
