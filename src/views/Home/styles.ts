@@ -10,15 +10,25 @@ export const Title = styled.div`
   margin: 10px 0 30px;
   padding-bottom: 10px;
   letter-spacing: 1px;
-  background-color: #f9f9f9;
+  background-color:rgb(255, 255, 255);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 `;
 
-export const SubitleText = styled.div`
+export const SubitleText = styled.div<{ isBold?: boolean }>`
   text-align: center;
-  font-weight: bold ;
+  font-weight: ${(props) => (props.isBold ? "bold" : "normal")};
   font-size: 18px;
   margin: 0 5px;
+`;
+
+export const Percentage = styled.span<{ probability: number }>`
+  font-size: 18px;
+  margin: 0 5px;
+  color: ${(props) => {
+    if (props.probability >= 80) return '#4d9e42';
+    if (props.probability >= 50) return '#ffd414';
+    return '#fa6436';
+  }};
 `;
 
 export const ColumnDiv = styled.div`
@@ -85,6 +95,7 @@ export const Button = styled.button`
 
 export const Arrows = styled.div`
   margin: 0 0 0 10px;
+  display: flex;
 `;
 
 export const Header = styled.div`

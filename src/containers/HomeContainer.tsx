@@ -6,27 +6,27 @@ import { predictFiles } from '../services/prediction.services';
 import { getKeywordsFromPDF } from '../helpers/articles_parser';
 
 const HomeContainer: FunctionComponent = () => {
-    const [prediction, setPrediction] = useState(null);
+    const [predictions, setPredictions] = useState<any>([]);
     const [isLoading, setIsLoading] = useState(false);
-    const [keywords, setKeywords] = useState<Record<string, string[]>>({});
+    const [keywords, setKeywords] = useState<any>([]);
     const [currentIndex, setCurrentIndex] = useState(0);
-    const [shouldShowAccuracy, setShouldShowAccuracy] = useState(false);
+    const [showPath, setShowPath] = useState(false);
     
     const handlePrevious = () => {
-        if (!prediction) return;
-        setCurrentIndex((prevIndex) => (prevIndex > 0 ? prevIndex - 1 : Object.keys(prediction).length - 1));
+        if (!predictions.length) return;
+        setCurrentIndex((prevIndex) => (prevIndex > 0 ? prevIndex - 1 : predictions.length - 1));
     };
 
     const handleNext = () => {
-        if (!prediction) return;
-        setCurrentIndex((prevIndex) => (prevIndex < Object.keys(prediction).length - 1 ? prevIndex + 1 : 0));
+        if (!predictions) return;
+        setCurrentIndex((prevIndex) => (prevIndex < predictions.length - 1 ? prevIndex + 1 : 0));
     };
 
     const { mutate } = useMutation({
         mutationFn: (file: any) => predictFiles(file),
 
         onSuccess: (prediction) => {
-            setPrediction(prediction.data)
+            setPredictions(prediction.data)
             setIsLoading(false);
         },
         onError: () => {
@@ -39,26 +39,24 @@ const HomeContainer: FunctionComponent = () => {
         const formData = new FormData(event.currentTarget);
         setIsLoading(true);
         mutate(formData)
-
+    
         const files = event.target.elements['files'].files
         if (files.length > 0) {
             const fileArray = Array.from(files as FileList);
-            const filesKeywords: Record<string, string[]> = {};
-
+            const filesKeywords: string[][] = [];
+    
             for (let i = 0; i < files.length; i++) {
                 const file = fileArray[i]
                 try {
                     const extractedKeywords = await getKeywordsFromPDF(file);
-                    filesKeywords[file.name.replace(/\.[^/.]+$/, "")] = extractedKeywords;
-                    if (extractedKeywords.length > 0) {
-                        setShouldShowAccuracy(true);
-                    }
+                    filesKeywords.push(extractedKeywords);
                 } catch (error) {
                     console.error(`Error procesando el archivo ${file.name}:`, error);
+                    filesKeywords.push([]); // mantener la posición en el array
                 }
             }
-            setKeywords(filesKeywords)
-
+            setKeywords(filesKeywords);
+    
         } else {
             console.log("No se seleccionaron archivos.");
         }
@@ -67,13 +65,17 @@ const HomeContainer: FunctionComponent = () => {
     return (
         <Home 
             onSubmitDoc={onSubmitDoc} 
-            fileName={prediction ? Object.keys(prediction)[currentIndex] : ''}
-            predictions={prediction ? prediction[Object.keys(prediction)[currentIndex]] : []} 
-            keywords={prediction ? keywords[Object.keys(prediction)[currentIndex]] : []} 
+            fileName={predictions.length ? predictions[currentIndex].filename : ''}
+            predictions={predictions.length ? predictions[currentIndex].predictions : []}
+            accuracy={predictions.length ? predictions[currentIndex].accuracy : 0}
+            keywords={predictions ? keywords[currentIndex] : []} 
             isLoading={isLoading} 
             handlePrevious={handlePrevious}
             handleNext={handleNext}
-            shouldShowAccuracy={shouldShowAccuracy}
+            shouldShowAccuracy={keywords[0]?.length > 0}
+            fileQuantity={predictions.length}
+            setShowPath={setShowPath}
+            showPath={showPath}
         />
     );
 }

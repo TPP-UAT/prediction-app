@@ -11,6 +11,7 @@ import {
     Header, 
     LoadingDiv, 
     LogoImage, 
+    Percentage, 
     PredictionContainer, 
     RowDiv, 
     SubitleText, 
@@ -29,6 +30,10 @@ interface HomeProps {
     handleNext: () => void;
     fileName: string;
     shouldShowAccuracy: boolean;
+    accuracy: number;
+    fileQuantity: number;
+    setShowPath: (showPath: boolean) => void;
+    showPath: boolean;
 }
 
 const Home = (props: HomeProps) => {
@@ -40,7 +45,11 @@ const Home = (props: HomeProps) => {
         handleNext, 
         handlePrevious,
         fileName,
-        shouldShowAccuracy
+        accuracy,
+        shouldShowAccuracy,
+        fileQuantity,
+        setShowPath,
+        showPath
     } = props;
 
     const sortedPredictions = predictions.sort((a: any, b: any) => {
@@ -64,11 +73,13 @@ const Home = (props: HomeProps) => {
             </Header>
 
             <ColumnDiv>
-                <Title> File Prediction </Title>
+                <Title> Predicción de términos claves - Unified Astronomy Thesaurus</Title>
                 <FormContainer>
                     <form onSubmit={onSubmitDoc}>
-                        <FormControl defaultValue="" required>
-                            <label htmlFor="file">Upload a file </label>
+                        <FormControl defaultValue="" required style={{ alignItems: 'center' }}>
+                            <label htmlFor="file" style={{ display: "block" }}>
+                                Adjuntar archivos PDF
+                            </label>
                             <input
                                 id="file"
                                 name="files"
@@ -76,25 +87,40 @@ const Home = (props: HomeProps) => {
                                 required
                                 multiple
                                 accept=".pdf"
-                                style={{ marginTop: '10px' }}
+                                style={{ marginTop: '10px', alignContent: 'center' }}
                             />
                         </FormControl>
-                        <Button type="submit">Submit</Button>
+                        <Button type="submit">Enviar</Button>
                     </form >
                 </FormContainer>
                 {isLoading && <LoadingDiv><ReactLoading type={'bubbles'} color={'#007aa0'} width={100} /></LoadingDiv>}
                 {!isLoading && predictions.length ?
                     <PredictionContainer>
                         <TitleRow>
+                            {fileQuantity > 1 && 
                             <Arrows>
                                 <ArrowBackIos onClick={handlePrevious} style={{ cursor: "pointer" }} />
-                            </Arrows>
-                            <SubitleText>Archivo: </SubitleText>
-                            <p>{fileName}</p>
+                            </Arrows>}
+                            <SubitleText isBold>Archivo: </SubitleText>
+                            <SubitleText>{fileName}</SubitleText>
+                            {fileQuantity > 1 && 
                             <Arrows>
                                 <ArrowForwardIos onClick={handleNext} style={{ cursor: "pointer" }} />
-                            </Arrows>
+                            </Arrows>}
                         </TitleRow>
+                        {shouldShowAccuracy ?
+                            <TitleRow>
+                                <SubitleText isBold>Precisión: </SubitleText>
+                                <Percentage probability={accuracy*100}>
+                                    {(accuracy*100).toFixed(2)}%
+                                </Percentage>
+                            </TitleRow>
+                            :
+                            <TitleRow>
+                                <SubitleText isBold>Mostrar caminos del UAT: </SubitleText>
+                                <input type="checkbox" checked={showPath} onClick={() => setShowPath(!showPath)} />
+                            </TitleRow>
+                        }
                         <RowDiv>
                             <Predictions
                                 predictions={sortedPredictions}
@@ -103,6 +129,7 @@ const Home = (props: HomeProps) => {
                                 probabilityMin={0.75}
                                 probabilityMax={1}
                                 shouldShowAccuracy={shouldShowAccuracy}
+                                showPath={showPath}
                             />
                             <Predictions
                                 predictions={sortedPredictions}
@@ -111,6 +138,7 @@ const Home = (props: HomeProps) => {
                                 probabilityMin={0.5}
                                 probabilityMax={0.749}
                                 shouldShowAccuracy={shouldShowAccuracy}
+                                showPath={showPath}
                             />
                         </RowDiv>
                         {shouldShowAccuracy && <Keywords keywords={keywords} predictions={sortedPredictions} />}

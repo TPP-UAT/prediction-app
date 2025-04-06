@@ -15,14 +15,39 @@ interface PredictionProps {
     term: any;
     originalKeywords: any;
     shouldShowAccuracy: boolean;
+    showPath: boolean;
 }
 
 const Prediction = (props: PredictionProps) => {
-    const { term, originalKeywords, shouldShowAccuracy } = props;
+    const { term, originalKeywords, shouldShowAccuracy, showPath } = props;
     const { term: termId, combined_probability: probability, name } = term;
     const [pathResults, setPathResults] = useState<{ [key: string]: { inPath: boolean; path: string[]; color: string } }>({});
+    const [mainPath, setMainPath] = useState<any>([]);
 
-    
+    useEffect(() => {
+        const fetchOriginalPaths = async () => {
+            const elevenChildren = [
+                "104", "1145", "1476", "1529", "1583", "343", "486", "563", "739", "804", "847"
+            ];
+            
+            const termsPath = await getFileTermsPath(elevenChildren, [termId]);
+            const flattened = termsPath.flat();
+            setMainPath(flattened);
+        };
+
+        fetchOriginalPaths();
+    }, [termId]);
+
+    const renderPath = () => {
+        const termWithPath = mainPath.find(kw => kw.isPredictedInPath);
+        return (
+            <>
+                <SubdirectoryArrowRightIcon style={{ color: "gray", height: "18px" }} />
+                <span style={{ color: "gray", fontSize: "14px" }}> Camino: [{termWithPath?.path.join(", ")}]</span>
+            </>
+        );
+    }
+
     const isKeywordCorrect = (termId: string): boolean => {
         return originalKeywords?.some((keyword: string) => keyword.includes(`(${termId})`));
     };
@@ -36,6 +61,10 @@ const Prediction = (props: PredictionProps) => {
             const originalKeywordId = keyword.match(/\((\d+)\)/);
             if (!originalKeywordId) continue;
             const originalId = originalKeywordId[1];
+            const isMainKeyword = elevenChildren.includes(predictedKeywordId);
+            if (isMainKeyword) {
+                return { inPath: true, path: [], color: "yellow" };
+            }
             const termsPath = await getFileTermsPath(elevenChildren, [originalId]);
         
             for (const termPath of termsPath) {
@@ -78,6 +107,8 @@ const Prediction = (props: PredictionProps) => {
         fetchPath();
     }, [termId]);
 
+    const shouldShowPath = (shouldShowAccuracy && !isKeywordCorrect(termId) && !pathResults[termId]?.inPath) || showPath;
+
     return (
         <ProbabilityDiv key={termId}>
             <Row>
@@ -106,6 +137,7 @@ const Prediction = (props: PredictionProps) => {
                 </Percentage>
             </Row>
             <Row style={{ paddingLeft: "35px" }}>
+                {shouldShowPath && renderPath()}
                 {shouldShowAccuracy && !isKeywordCorrect(termId) && pathResults[termId]?.inPath && (
                     <>
                         <SubdirectoryArrowRightIcon style={{ color: "gray", height: "18px" }} />

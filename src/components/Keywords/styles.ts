@@ -10,6 +10,13 @@ export const Column = styled.div`
   text-overflow: ellipsis;
 `;
 
+export const Row = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 10px;
+`;
+
 export const Title = styled.div`
   text-align: center;
   font-weight: bold;
@@ -35,6 +42,6 @@ export const KeywordsDetails = styled.p`
   text-align: left;
   font-weight: bold ;
   font-size: 15px;
-  margin: 0 0 10px;
+  margin: 0;
   border-right: 2px;
 `;
