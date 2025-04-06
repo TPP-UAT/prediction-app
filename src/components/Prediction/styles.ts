@@ -24,7 +24,7 @@ export const Title = styled.p`
 
 export const Percentage = styled.span<{ probability: number }>`
   color: ${(props) => {
-    if (props.probability >= 80) return '#4d9e42';
+    if (props.probability >= 75) return '#4d9e42';
     if (props.probability >= 50) return '#ffd414';
     return '#fa6436';
   }};
