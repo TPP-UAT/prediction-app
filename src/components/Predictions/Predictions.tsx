@@ -9,10 +9,11 @@ interface PredictionsProps {
     keywords: any;
     probabilityMax: number;
     probabilityMin: number;
+    shouldShowAccuracy: boolean;
 }
 
 const Predictions = (props: PredictionsProps) => {
-    const { predictions, title, keywords, probabilityMax, probabilityMin } = props;
+    const { predictions, title, keywords, probabilityMax, probabilityMin, shouldShowAccuracy } = props;
 
     return (
         <Column>
@@ -22,7 +23,7 @@ const Predictions = (props: PredictionsProps) => {
 
                 if (prob >= probabilityMin && prob <= probabilityMax) {
                     return (
-                       <Prediction term={item} originalKeywords={keywords} /> 
+                       <Prediction term={item} originalKeywords={keywords} shouldShowAccuracy={shouldShowAccuracy} /> 
                     );
                 }
 

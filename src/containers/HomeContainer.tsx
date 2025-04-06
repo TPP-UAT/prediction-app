@@ -10,6 +10,7 @@ const HomeContainer: FunctionComponent = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [keywords, setKeywords] = useState<Record<string, string[]>>({});
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [shouldShowAccuracy, setShouldShowAccuracy] = useState(false);
     
     const handlePrevious = () => {
         if (!prediction) return;
@@ -49,6 +50,9 @@ const HomeContainer: FunctionComponent = () => {
                 try {
                     const extractedKeywords = await getKeywordsFromPDF(file);
                     filesKeywords[file.name.replace(/\.[^/.]+$/, "")] = extractedKeywords;
+                    if (extractedKeywords.length > 0) {
+                        setShouldShowAccuracy(true);
+                    }
                 } catch (error) {
                     console.error(`Error procesando el archivo ${file.name}:`, error);
                 }
@@ -69,6 +73,7 @@ const HomeContainer: FunctionComponent = () => {
             isLoading={isLoading} 
             handlePrevious={handlePrevious}
             handleNext={handleNext}
+            shouldShowAccuracy={shouldShowAccuracy}
         />
     );
 }

@@ -14,10 +14,11 @@ import { useEffect, useState } from 'react';
 interface PredictionProps {
     term: any;
     originalKeywords: any;
+    shouldShowAccuracy: boolean;
 }
 
 const Prediction = (props: PredictionProps) => {
-    const { term, originalKeywords } = props;
+    const { term, originalKeywords, shouldShowAccuracy } = props;
     const { term: termId, combined_probability: probability, name } = term;
     const [pathResults, setPathResults] = useState<{ [key: string]: { inPath: boolean; path: string[]; color: string } }>({});
 
@@ -42,7 +43,7 @@ const Prediction = (props: PredictionProps) => {
                 const path = pathWithAllElements.slice(1, -1); // Delete first and last element
                 if (path.includes(predictedKeywordId)) {
                     console.log("Keyword predicted:", predictedKeywordId, "| Original keyword:", originalId, "| Path:", pathWithAllElements);
-                    return { inPath: true, path: pathWithAllElements, color: "orange" };
+                    return { inPath: true, path: pathWithAllElements, color: "yellow" };
                 }
             }
         }
@@ -60,7 +61,7 @@ const Prediction = (props: PredictionProps) => {
         
                 if (path.includes(originalId)) {
                     console.log("CHILDREN - Keyword predicted:", predictedKeywordId, "| Original keyword:", originalId, "| Path:", pathWithAllElements);
-                    return { inPath: true, path: pathWithAllElements, color: "yellow" };
+                    return { inPath: true, path: pathWithAllElements, color: "orange" };
                 }
             }
         }
@@ -80,18 +81,23 @@ const Prediction = (props: PredictionProps) => {
     return (
         <ProbabilityDiv key={termId}>
             <Row>
-                {isKeywordCorrect(termId) ?
-                    <CheckIcon style={{ color: "green", marginRight: "5px" }} />
-                :
+                {shouldShowAccuracy && (
                     <>
-                        {pathResults[termId]?.inPath && (
-                            <CheckIcon style={{ color: pathResults[termId]?.color, marginRight: "5px" }} />
-                        )}
+                        {isKeywordCorrect(termId) ?
+                            <CheckIcon style={{ color: "green", marginRight: "5px" }} />
+                        :
+                        <>
+                            {pathResults[termId]?.inPath && (
+                                <CheckIcon style={{ color: pathResults[termId]?.color, marginRight: "5px" }} />
+                            )}
                     </>
                 }
                 {!isKeywordCorrect(termId) && !pathResults[termId]?.inPath && (
                     <CloseIcon style={{ color: "red", marginRight: "5px" }} />
                 )}
+                    </>
+                )}
+                
                 <Title>
                     {name} ({termId}) - Probabilidad:
                 </Title>
@@ -100,7 +106,7 @@ const Prediction = (props: PredictionProps) => {
                 </Percentage>
             </Row>
             <Row style={{ paddingLeft: "35px" }}>
-                {pathResults[termId]?.inPath && (
+                {shouldShowAccuracy && !isKeywordCorrect(termId) && pathResults[termId]?.inPath && (
                     <>
                         <SubdirectoryArrowRightIcon style={{ color: "gray", height: "18px" }} />
                         <span style={{ color: "gray", fontSize: "14px" }}> Camino: [{pathResults[termId]?.path.join(", ")}]</span>

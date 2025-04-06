@@ -28,6 +28,7 @@ interface HomeProps {
     handlePrevious: () => void;
     handleNext: () => void;
     fileName: string;
+    shouldShowAccuracy: boolean;
 }
 
 const Home = (props: HomeProps) => {
@@ -38,7 +39,8 @@ const Home = (props: HomeProps) => {
         isLoading,
         handleNext, 
         handlePrevious,
-        fileName
+        fileName,
+        shouldShowAccuracy
     } = props;
 
     const sortedPredictions = predictions.sort((a: any, b: any) => {
@@ -100,16 +102,18 @@ const Home = (props: HomeProps) => {
                                 title="Terminos seguros"
                                 probabilityMin={0.75}
                                 probabilityMax={1}
+                                shouldShowAccuracy={shouldShowAccuracy}
                             />
                             <Predictions
                                 predictions={sortedPredictions}
                                 keywords={keywords}
                                 title="Terminos probables"
-                                probabilityMin={0.749}
-                                probabilityMax={0.5}
+                                probabilityMin={0.5}
+                                probabilityMax={0.749}
+                                shouldShowAccuracy={shouldShowAccuracy}
                             />
                         </RowDiv>
-                        <Keywords keywords={keywords} predictions={sortedPredictions} />
+                        {shouldShowAccuracy && <Keywords keywords={keywords} predictions={sortedPredictions} />}
                     </PredictionContainer>
                     : null
                 }

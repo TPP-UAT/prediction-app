@@ -41,6 +41,7 @@ const Keywords = (props: KeywordsProps) => {
 
     const renderIcon = (termsPath: any, reversePath: any) => {
         const combinedPaths = [...termsPath, ...reversePath];
+        console.log('🚀 ~ combinedPaths:', combinedPaths);
         const found = combinedPaths.find((termPath: any) => Array.isArray(termPath.path));
 
         if (!found) {
@@ -63,7 +64,7 @@ const Keywords = (props: KeywordsProps) => {
 
     return (
         <Column>
-            <Title>Palabras claves actuales:</Title>
+            <Title>Terminos originales:</Title>
             <DetailsColumnDiv>
                 <div>
                     {keywordsWithPaths.map(({ keyword, termsPath, reversePath}, index: any) => {
