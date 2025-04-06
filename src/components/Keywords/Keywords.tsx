@@ -53,9 +53,9 @@ const Keywords = (props: KeywordsProps) => {
         }
         if (found.path.length > 1) {
             if (found.isReverse) {
-                return <CheckIcon style={{ color: "orange", marginRight: "5px", marginTop: "-13px" }} />;
-            } else {
                 return <CheckIcon style={{ color: "yellow", marginRight: "5px", marginTop: "-13px" }} />;
+            } else {
+                return <CheckIcon style={{ color: "orange", marginRight: "5px", marginTop: "-13px" }} />;
             }
         }
         return null;
