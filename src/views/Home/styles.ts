@@ -1,7 +1,6 @@
 import styled from "styled-components";
-import { Sync } from "@mui/icons-material";
 
-export const TitleContainer = styled.div`
+export const Title = styled.div`
   border-bottom: 2px solid #cccccc;
   text-align: center;
   font-weight: bold;
@@ -32,23 +31,7 @@ export const ColumnDiv = styled.div`
   text-overflow: ellipsis;
 `;
 
-export const DetailsColumnDiv = styled.div`
-  display: flex;
-  flex-direction: column;
-  text-align: left;
-  overflow: hidden;
-  margin: 0 0 10px
-`;
-
-export const DetailsRowDiv = styled.div`
-  display: flex;
-  flex-direction: row;
-  text-align: center;
-  width: 100%;
-  align-items: baseline;
-`;
-
-export const TitleRowDiv = styled.div`
+export const TitleRow = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -84,39 +67,6 @@ export const PredictionContainer = styled.div`
   margin: 20px 10px;
 `;
 
-export const TermTitle = styled.div`
-  text-align: center;
-  font-weight: bold;
-  font-size: 22px;
-  color: #2c3e50;
-  margin: 0 5px 15px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-family: 'Helvetica Neue', Arial, sans-serif;
-  border-bottom: 2px solid #007aa0;
-  padding-bottom: 5px;
-`;
-
-export const TermDetailsTitle = styled.p`
-  text-align: center;
-  font-weight: bold ;
-  font-size: 15px;
-  margin: 0 5px;
-  border-right: 2px;
-`;
-
-export const TermDetailsText = styled.div`
-  text-align: center;
-  font-size: 15px;
-`;
-
-export const SubtitleDetailsDiv = styled.div`
-  display: flex;
-  flex-direction: row;
-  text-align: center;
-  width: 100%;
-`;
-
 export const Button = styled.button`
   padding: 7px 15px;
   font-size: 15px;
@@ -133,11 +83,11 @@ export const Button = styled.button`
   }
 ;`
 
-export const ArrowsDiv = styled.div`
-  margin: 0 0 0 10px
+export const Arrows = styled.div`
+  margin: 0 0 0 10px;
 `;
 
-export const HeaderDiv = styled.div`
+export const Header = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
@@ -150,40 +100,10 @@ export const LogoImage = styled.img`
   margin: 10px;
 `;
 
-export const ProbabilityText = styled.span<{ probability: number }>`
-  color: ${(props) => {
-    if (props.probability >= 80) return '#4d9e42';
-    if (props.probability >= 50) return '#ffd414';
-    return '#fa6436';
-  }};
-  font-weight: bold;
-`;
-
 export const LoadingDiv = styled.div`
   display: flex;
   flex-direction: column;
   overflow: hidden;
   align-items: center;
   margin: 100px 0 0 0;
-`;
-
-export const TitleActualKeywords = styled.div`
-  text-align: center;
-  font-weight: bold;
-  font-size: 22px;
-  color:#2c3e50;
-  margin: 30px 5px 15px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-family: 'Helvetica Neue', Arial, sans-serif;
-  border-bottom: 2px solid #007aa0;
-  padding-bottom: 5px;
-`;
-
-export const KeywordsDetails = styled.p`
-  text-align: left;
-  font-weight: bold ;
-  font-size: 15px;
-  margin: 0 0 10px;
-  border-right: 2px;
 `;

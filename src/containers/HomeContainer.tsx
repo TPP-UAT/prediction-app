@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { FunctionComponent, useState } from 'react';
 import Home from '../views/Home/Home';
 import { useMutation } from "@tanstack/react-query";
@@ -8,6 +9,18 @@ const HomeContainer: FunctionComponent = () => {
     const [prediction, setPrediction] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [keywords, setKeywords] = useState<Record<string, string[]>>({});
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const [shouldShowAccuracy, setShouldShowAccuracy] = useState(false);
+    
+    const handlePrevious = () => {
+        if (!prediction) return;
+        setCurrentIndex((prevIndex) => (prevIndex > 0 ? prevIndex - 1 : Object.keys(prediction).length - 1));
+    };
+
+    const handleNext = () => {
+        if (!prediction) return;
+        setCurrentIndex((prevIndex) => (prevIndex < Object.keys(prediction).length - 1 ? prevIndex + 1 : 0));
+    };
 
     const { mutate } = useMutation({
         mutationFn: (file: any) => predictFiles(file),
@@ -37,6 +50,9 @@ const HomeContainer: FunctionComponent = () => {
                 try {
                     const extractedKeywords = await getKeywordsFromPDF(file);
                     filesKeywords[file.name.replace(/\.[^/.]+$/, "")] = extractedKeywords;
+                    if (extractedKeywords.length > 0) {
+                        setShouldShowAccuracy(true);
+                    }
                 } catch (error) {
                     console.error(`Error procesando el archivo ${file.name}:`, error);
                 }
@@ -48,8 +64,18 @@ const HomeContainer: FunctionComponent = () => {
         }
     }
 
-    return <Home onSubmitDoc={onSubmitDoc} prediction={prediction} keywords={keywords} isLoading={isLoading} />;
-
+    return (
+        <Home 
+            onSubmitDoc={onSubmitDoc} 
+            fileName={prediction ? Object.keys(prediction)[currentIndex] : ''}
+            predictions={prediction ? prediction[Object.keys(prediction)[currentIndex]] : []} 
+            keywords={prediction ? keywords[Object.keys(prediction)[currentIndex]] : []} 
+            isLoading={isLoading} 
+            handlePrevious={handlePrevious}
+            handleNext={handleNext}
+            shouldShowAccuracy={shouldShowAccuracy}
+        />
+    );
 }
 
 export default HomeContainer;
