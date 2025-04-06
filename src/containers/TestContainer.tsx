@@ -12,7 +12,6 @@ const TestContainer: FunctionComponent = () => {
         mutationFn: (file: any) => predictFilesTest(file),
 
         onSuccess: (prediction) => {
-            console.log("FILE PREDICHA", prediction)
             setPrediction(prediction.data)
         },
         onError: () => {
@@ -24,7 +23,6 @@ const TestContainer: FunctionComponent = () => {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
         mutate(formData)
-        console.log("Submit", formData)
     }
 
     return <Test onSubmitDoc={onSubmitDoc} prediction={prediction} />;

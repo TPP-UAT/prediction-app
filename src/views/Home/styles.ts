@@ -1,5 +1,5 @@
 import styled from "styled-components";
-
+import { Sync } from "@mui/icons-material";
 
 export const TitleContainer = styled.div`
   border-bottom: 2px solid #cccccc;
@@ -21,7 +21,6 @@ export const SubitleText = styled.div`
   font-size: 18px;
   margin: 0 5px;
 `;
-
 
 export const ColumnDiv = styled.div`
   display: flex;
@@ -45,7 +44,8 @@ export const DetailsRowDiv = styled.div`
   display: flex;
   flex-direction: row;
   text-align: center;
-  width: 70%;
+  width: 100%;
+  align-items: baseline;
 `;
 
 export const TitleRowDiv = styled.div`
@@ -97,8 +97,7 @@ export const TermTitle = styled.div`
   padding-bottom: 5px;
 `;
 
-
-export const TermDetailsTitle = styled.div`
+export const TermDetailsTitle = styled.p`
   text-align: center;
   font-weight: bold ;
   font-size: 15px;
@@ -138,14 +137,12 @@ export const ArrowsDiv = styled.div`
   margin: 0 0 0 10px
 `;
 
-
 export const HeaderDiv = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
   background-color: #007aa0;
 `;
-
 
 export const LogoImage = styled.img`
   width: 300px;
@@ -155,9 +152,38 @@ export const LogoImage = styled.img`
 
 export const ProbabilityText = styled.span<{ probability: number }>`
   color: ${(props) => {
-    if (props.probability > 90) return '#43a93e';
-    if (props.probability >= 50) return '#cbb23a';
-    return '#cb4444';
+    if (props.probability >= 80) return '#4d9e42';
+    if (props.probability >= 50) return '#ffd414';
+    return '#fa6436';
   }};
   font-weight: bold;
+`;
+
+export const LoadingDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  align-items: center;
+  margin: 100px 0 0 0;
+`;
+
+export const TitleActualKeywords = styled.div`
+  text-align: center;
+  font-weight: bold;
+  font-size: 22px;
+  color:#2c3e50;
+  margin: 30px 5px 15px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  border-bottom: 2px solid #007aa0;
+  padding-bottom: 5px;
+`;
+
+export const KeywordsDetails = styled.p`
+  text-align: left;
+  font-weight: bold ;
+  font-size: 15px;
+  margin: 0 0 10px;
+  border-right: 2px;
 `;
