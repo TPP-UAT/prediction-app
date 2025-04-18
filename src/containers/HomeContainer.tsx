@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { FunctionComponent, useState } from 'react';
-import Home from '../views/Home/Home';
 import { useMutation } from "@tanstack/react-query";
+import Home from '../views/Home/Home';
 import { predictFiles } from '../services/prediction.services';
 import { getKeywordsFromPDF } from '../helpers/articles_parser';
 

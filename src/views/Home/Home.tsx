@@ -1,25 +1,20 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useEffect } from 'react';
-import { FormControl } from '@mui/base/FormControl';
 import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
 import ReactLoading from 'react-loading';
 import { 
     Arrows,
-    Button, 
     ColumnDiv, 
-    FormContainer, 
-    Header, 
     LoadingDiv, 
-    LogoImage, 
     Percentage, 
     PredictionContainer, 
     RowDiv, 
     SubitleText, 
-    Title, 
-    TitleRow
+    TitleRow,
 } from './styles';
 import Predictions from '../../components/Predictions/Predictions';
 import Keywords from '../../components/Keywords/Keywords';
+import Header from '../../components/Header/Header';
+import FilePicker from '../../components/FilePicker/FilePicker';
 
 interface HomeProps {
     onSubmitDoc: (event: React.FormEvent<HTMLFormElement>) => void;
@@ -61,38 +56,11 @@ const Home = (props: HomeProps) => {
         return 0;
     });
 
-    useEffect(() => {
-        
-    }
-    , [predictions]);
-
     return (
         <div>
-            <Header>
-                <LogoImage src="../../src/assets/AAS-Publishing-2-black.jpg" alt="Logo" />
-            </Header>
-
+            <Header />
             <ColumnDiv>
-                <Title> Predicción de términos claves - Unified Astronomy Thesaurus</Title>
-                <FormContainer>
-                    <form onSubmit={onSubmitDoc}>
-                        <FormControl defaultValue="" required style={{ alignItems: 'center' }}>
-                            <label htmlFor="file" style={{ display: "block" }}>
-                                Adjuntar archivos PDF
-                            </label>
-                            <input
-                                id="file"
-                                name="files"
-                                type="file"
-                                required
-                                multiple
-                                accept=".pdf"
-                                style={{ marginTop: '10px', alignContent: 'center' }}
-                            />
-                        </FormControl>
-                        <Button type="submit">Enviar</Button>
-                    </form >
-                </FormContainer>
+                <FilePicker onSubmit={onSubmitDoc} />
                 {isLoading && <LoadingDiv><ReactLoading type={'bubbles'} color={'#007aa0'} width={100} /></LoadingDiv>}
                 {!isLoading && predictions.length ?
                     <PredictionContainer>
