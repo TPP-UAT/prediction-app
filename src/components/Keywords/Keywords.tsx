@@ -110,7 +110,6 @@ const Keywords = (props: KeywordsProps) => {
 
     const renderModal = (props: any) => {
         const { open, onClose } = props;
-        console.log('🚀 ~ keyword:', keyword);
         return (
             <Dialog open={open} onClose={onClose} maxWidth="lg">
                 <DialogTitle>{keyword}</DialogTitle>

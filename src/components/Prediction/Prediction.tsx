@@ -123,11 +123,8 @@ const Prediction = (props: PredictionProps) => {
         fetchPath();
     }, [termId]);
 
-    const shouldShowPath = (shouldShowAccuracy && !isKeywordCorrect(termId) && !pathResults[termId]?.inPath) || showPath;
-
     const renderModal = (props: any) => {
         const { open, onClose } = props;
-        console.log('🚀 ~ term:', term);
         return (
             <Dialog open={open} onClose={onClose} maxWidth="lg">
                 <DialogTitle>{term.name} ({term.term})</DialogTitle>
