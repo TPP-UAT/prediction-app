@@ -1,8 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useMemo, useState } from "react";
 import CheckIcon from '@mui/icons-material/Check';
-import EastIcon from '@mui/icons-material/East';
+import { Dialog, DialogTitle, DialogContent } from '@mui/material';
+import SubdirectoryArrowRightIcon from '@mui/icons-material/SubdirectoryArrowRight';
+import InfoIcon from '@mui/icons-material/Info';
 import CloseIcon from '@mui/icons-material/Close';
+import { getTermNameById } from '../../helpers/thesarurus';
 import getFileTermsPath from "../../helpers/file_terms_path_finder";
 import { Column, DetailsColumnDiv, KeywordsDetails, Row, Title } from "./styles";
 
@@ -15,6 +18,12 @@ const Keywords = (props: KeywordsProps) => {
     const { keywords, predictions } = props;
     const [keywordsWithPaths, setKeywordsWithPaths] = useState<any>([]);
     const [originalKeywordsWithPaths, setOriginalKeywordsWithPaths] = useState<any>([]);
+    const [keyword, setKeyword] = useState("");
+    const [openModal, setOpenModal] = useState(false);
+
+    const handleOpen = () => setOpenModal(true);
+    const handleClose = () => setOpenModal(false);
+
     const predictionsIds = useMemo(
         () => predictions.map((prediction: any) => prediction.term),
         [predictions]
@@ -82,34 +91,67 @@ const Keywords = (props: KeywordsProps) => {
 
     const renderPaths = (keyword: string) => {
         const originalKeywordid = keyword.match(/\((\d+)\)$/)?.[1];
-        const termWithPath = originalKeywordsWithPaths.find(kw => kw.originalId === originalKeywordid && kw.isPredictedInPath);
+        const termWithPath = originalKeywordsWithPaths.find((kw: any) => kw.originalId === originalKeywordid && kw.isPredictedInPath);
+        
+        if (termWithPath) {
+            let marginLeft = -5;
+            const path = termWithPath.path.map((termId: string, index: number) => {
+                marginLeft += 5;
+                return (
+                    <div key={index} style={{ marginLeft }}>
+                        <SubdirectoryArrowRightIcon style={{ color: "gray", height: "16px" }} />
+                        <span style={{ color: "gray", fontSize: "14px" }}>{getTermNameById(termId)} ({termId})</span>
+                    </div>
+                );
+            });
+            return path;
+        }
+    }
+
+    const renderModal = (props: any) => {
+        const { open, onClose } = props;
+        console.log('🚀 ~ keyword:', keyword);
         return (
-            <>
-                <EastIcon style={{ color: "gray", height: "18px" }} />
-                <span style={{ color: "gray", fontSize: "14px" }}> Camino: [{termWithPath?.path.join(", ")}]</span>
-            </>
+            <Dialog open={open} onClose={onClose} maxWidth="lg">
+                <DialogTitle>{keyword}</DialogTitle>
+                <DialogContent>
+                    <KeywordsDetails>
+                        Camino desde los términos principales:
+                    </KeywordsDetails>
+                    {renderPaths(keyword)}
+                </DialogContent>
+            </Dialog>
         );
     }
 
     return (
-        <Column>
-            <Title>Terminos originales:</Title>
-            <DetailsColumnDiv>
-                <div>
-                    {keywordsWithPaths.map(({ keyword, termsPath, reversePath}, index: any) => {
-                        return (
-                            <div key={index} style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: 'center' }}>
-                                <Row>
-                                    {renderIcon(termsPath, reversePath)}
-                                    <KeywordsDetails>{keyword}</KeywordsDetails>
-                                    {renderPaths(keyword)}
-                                </Row>
-                            </div>
-                        );
-                    })}
-                </div>
-            </DetailsColumnDiv>
-        </Column>
+        <>
+            {renderModal({ open: openModal, onClose: handleClose })}
+            <Column>
+                <Title>Terminos originales:</Title>
+                <DetailsColumnDiv>
+                    <div>
+                        {keywordsWithPaths.map(({ keyword, termsPath, reversePath}, index: any) => {
+                            return (
+                                <div key={index} style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: 'center' }}>
+                                    <Row>
+                                        {renderIcon(termsPath, reversePath)}
+                                        <KeywordsDetails>{keyword}</KeywordsDetails>
+                                        <InfoIcon
+                                            onClick={() => {
+                                                setKeyword(keyword);
+                                                handleOpen();
+                                            }}
+                                            style={{ color: "gray", cursor: "pointer", marginLeft: "10px" }}
+                                        />
+                                    </Row>
+                                </div>
+                            );
+                        })}
+                    </div>
+                </DetailsColumnDiv>
+            </Column>
+        </>
     );
 };
 
