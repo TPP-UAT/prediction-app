@@ -16,7 +16,7 @@ const RecommendationList = (props: RecommendationListProps) => {
             <Title>{title}</Title>
             {recommendations.map((recommendation: any, _index: number) => (
                 <RecommendationCard key={recommendation.id}>
-                <ArticleTitle>Artículo: {recommendation.id}</ArticleTitle>
+                <ArticleTitle href={recommendation.link} target="_blank">{recommendation.title}</ArticleTitle>
 
                 <KeywordRow>
                     <SubdirectoryArrowRightIcon style={{ color: "gray", height: "18px", marginRight: 4 }} />

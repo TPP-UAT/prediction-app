@@ -40,11 +40,10 @@ export const RecommendationCard = styled.div`
   box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 `;
 
-export const ArticleTitle = styled.div`
+export const ArticleTitle = styled.a`
   font-weight: bold;
   font-size: 16px;
   margin-bottom: 8px;
-  color: #2c3e50;
 `;
 
 export const KeywordRow = styled(Row)`
