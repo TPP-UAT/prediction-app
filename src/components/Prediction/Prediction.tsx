@@ -18,11 +18,10 @@ interface PredictionProps {
     term: any;
     originalKeywords: any;
     shouldShowAccuracy: boolean;
-    showPath: boolean;
 }
 
 const Prediction = (props: PredictionProps) => {
-    const { term, originalKeywords, shouldShowAccuracy, showPath } = props;
+    const { term, originalKeywords, shouldShowAccuracy } = props;
     const { term: termId, combined_probability: probability, name } = term;
     const [pathResults, setPathResults] = useState<{ [key: string]: { inPath: boolean; path: string[]; color: string, title: string } }>({});
     const [mainPath, setMainPath] = useState<any>([]);

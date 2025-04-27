@@ -10,7 +10,7 @@ export const Title = styled.div`
 `;
 
 export const SubitleText = styled.div<{ isBold?: boolean }>`
-  text-align: center;
+  text-align: start;
   font-weight: ${(props) => (props.isBold ? "bold" : "normal")};
   font-size: 18px;
   margin: 0 5px;
@@ -40,7 +40,6 @@ export const ColumnDiv = styled.div`
 export const TitleRow = styled.div`
   display: flex;
   flex-direction: row;
-  align-items: center;
   text-align: center;
   justify-content: center;
   width: 100%;

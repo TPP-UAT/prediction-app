@@ -10,7 +10,6 @@ const HomeContainer: FunctionComponent = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [keywords, setKeywords] = useState<any>([]);
     const [currentIndex, setCurrentIndex] = useState(0);
-    const [showPath, setShowPath] = useState(false);
     
     const handlePrevious = () => {
         if (!predictions.length) return;
@@ -74,8 +73,6 @@ const HomeContainer: FunctionComponent = () => {
             handleNext={handleNext}
             shouldShowAccuracy={keywords[0]?.length > 0}
             fileQuantity={predictions.length}
-            setShowPath={setShowPath}
-            showPath={showPath}
         />
     );
 }

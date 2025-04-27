@@ -27,8 +27,6 @@ interface HomeProps {
     shouldShowAccuracy: boolean;
     accuracy: number;
     fileQuantity: number;
-    setShowPath: (showPath: boolean) => void;
-    showPath: boolean;
 }
 
 const Home = (props: HomeProps) => {
@@ -43,8 +41,6 @@ const Home = (props: HomeProps) => {
         accuracy,
         shouldShowAccuracy,
         fileQuantity,
-        setShowPath,
-        showPath
     } = props;
 
     const sortedPredictions = predictions.sort((a: any, b: any) => {
@@ -83,11 +79,7 @@ const Home = (props: HomeProps) => {
                                     {(accuracy*100).toFixed(2)}%
                                 </Percentage>
                             </TitleRow>
-                            :
-                            <TitleRow>
-                                <SubitleText isBold>Mostrar caminos del UAT: </SubitleText>
-                                <input type="checkbox" checked={showPath} onClick={() => setShowPath(!showPath)} />
-                            </TitleRow>
+                            : null
                         }
                         <RowDiv>
                             <Predictions
@@ -97,7 +89,6 @@ const Home = (props: HomeProps) => {
                                 probabilityMin={0.75}
                                 probabilityMax={1}
                                 shouldShowAccuracy={shouldShowAccuracy}
-                                showPath={showPath}
                             />
                             <Predictions
                                 predictions={sortedPredictions}
@@ -106,7 +97,6 @@ const Home = (props: HomeProps) => {
                                 probabilityMin={0.5}
                                 probabilityMax={0.749}
                                 shouldShowAccuracy={shouldShowAccuracy}
-                                showPath={showPath}
                             />
                         </RowDiv>
                         {shouldShowAccuracy && <Keywords keywords={keywords} predictions={sortedPredictions} />}
