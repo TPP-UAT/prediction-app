@@ -127,7 +127,7 @@ const Keywords = (props: KeywordsProps) => {
         <>
             {renderModal({ open: openModal, onClose: handleClose })}
             <Column>
-                <Title>Terminos originales:</Title>
+                <Title>Términos originales:</Title>
                 <DetailsColumnDiv>
                     <div>
                         {keywordsWithPaths.map(({ keyword, termsPath, reversePath}, index: any) => {

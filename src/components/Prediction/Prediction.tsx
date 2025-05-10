@@ -18,10 +18,11 @@ interface PredictionProps {
     term: any;
     originalKeywords: any;
     shouldShowAccuracy: boolean;
+    isRight?: boolean;
 }
 
 const Prediction = (props: PredictionProps) => {
-    const { term, originalKeywords, shouldShowAccuracy } = props;
+    const { term, originalKeywords, shouldShowAccuracy, isRight } = props;
     const { term: termId, combined_probability: probability, name } = term;
     const [pathResults, setPathResults] = useState<{ [key: string]: { inPath: boolean; path: string[]; color: string, title: string } }>({});
     const [mainPath, setMainPath] = useState<any>([]);
@@ -149,7 +150,7 @@ const Prediction = (props: PredictionProps) => {
         <>
             {renderModal({ open: openModal, onClose: handleClose })}
             <ProbabilityDiv key={termId}>
-                <Row>
+                <Row isRight={isRight}>
                     {shouldShowAccuracy && (
                         <>
                             {isKeywordCorrect(termId) ?

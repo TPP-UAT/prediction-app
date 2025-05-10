@@ -10,20 +10,21 @@ interface PredictionsProps {
     probabilityMax: number;
     probabilityMin: number;
     shouldShowAccuracy: boolean;
+    isRight?: boolean;
 }
 
 const Predictions = (props: PredictionsProps) => {
-    const { predictions, title, keywords, probabilityMax, probabilityMin, shouldShowAccuracy } = props;
+    const { predictions, title, keywords, probabilityMax, probabilityMin, shouldShowAccuracy, isRight = false } = props;
 
     return (
-        <Column>
+        <Column isRight={isRight}>
             <Title>{title}</Title>
             {predictions.map((item: any, _index: any) => {
                 const prob = item.combined_probability;
 
                 if (prob >= probabilityMin && prob <= probabilityMax) {
                     return (
-                       <Prediction term={item} originalKeywords={keywords} shouldShowAccuracy={shouldShowAccuracy} /> 
+                       <Prediction term={item} originalKeywords={keywords} shouldShowAccuracy={shouldShowAccuracy} isRight={isRight} /> 
                     );
                 }
 

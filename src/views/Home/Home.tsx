@@ -85,7 +85,7 @@ const Home = (props: HomeProps) => {
                             <Predictions
                                 predictions={sortedPredictions}
                                 keywords={keywords}
-                                title="Terminos seguros"
+                                title="Términos seguros"
                                 probabilityMin={0.75}
                                 probabilityMax={1}
                                 shouldShowAccuracy={shouldShowAccuracy}
@@ -93,10 +93,11 @@ const Home = (props: HomeProps) => {
                             <Predictions
                                 predictions={sortedPredictions}
                                 keywords={keywords}
-                                title="Terminos probables"
+                                title="Términos probables"
                                 probabilityMin={0.5}
                                 probabilityMax={0.749}
                                 shouldShowAccuracy={shouldShowAccuracy}
+                                isRight
                             />
                         </RowDiv>
                         {shouldShowAccuracy && <Keywords keywords={keywords} predictions={sortedPredictions} />}

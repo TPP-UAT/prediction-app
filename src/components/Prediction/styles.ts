@@ -1,9 +1,10 @@
 import styled from "styled-components";
 
-export const Row = styled.div`
+export const Row = styled.div<{ isRight?: boolean }>`
   display: flex;
   flex-direction: row;
   align-items: center;
+  ${(props) => (props.isRight ? "justify-content: flex-end;" : "justify-content: flex-start;")}
 `;
 
 export const ProbabilityDiv = styled.div`

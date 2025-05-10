@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const Column = styled.div`
+export const Column = styled.div<{ isRight?: boolean }>`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -8,6 +8,7 @@ export const Column = styled.div`
   width:100%;
   padding: 5px 0 5px 0;
   text-overflow: ellipsis;
+  ${(props) => (props.isRight ? "align-items: end;" : "align-items: start;")}
 `;
 
 export const Title = styled.div`
